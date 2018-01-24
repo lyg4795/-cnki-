@@ -1,0 +1,1 @@
+function SubTurnExport(d,c){var a=document.createElement("form");a.method="post";a.setAttribute("target","_blank");a.action=d;var b=document.createElement("input");b.setAttribute("name","formfilenames");b.setAttribute("value",c);a.appendChild(b);document.body.appendChild(a);a.submit();document.body.removeChild(a)}

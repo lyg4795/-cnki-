@@ -1,0 +1,15 @@
+action:
+NaviCode:*
+ua:1.11
+isinEn:1
+PageName:ASP.brief_default_result_aspx
+DbPrefix:SCDB
+DbCatalog:中国学术文献网络出版总库
+ConfigFile:SCDBINDEX.xml
+db_opt:CJFQ,CJRF,CDFD,CMFD,CPFD,IPFD,CCND,CCJD
+txt_1_sel:SU$%=|
+txt_1_value1:氯化1-甲基-3-丁基咪唑的制备与表征
+txt_1_special1:%
+his:0
+parentdb:SCDB
+__:Tue Jan 23 2018 18:35:33 GMT+0800 (中国标准时间)
