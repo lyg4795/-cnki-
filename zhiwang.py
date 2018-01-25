@@ -59,24 +59,27 @@ for k in keylist:
         "S":"1",
         "sorttype":"(FFD,'RANK') desc",
     }
-    # 用urlencode构建网址
-    search=s.get(url+urlencode(parameter),headers=headers)
-    selector=scrapy.Selector(text=search.text)
-    # 仅仅<tbody>无法被找到
-    d_url=selector.xpath('//table[@class="GridTableContent"]/tr[2]/td[2]/a/@href').extract_first()
-    # 修改获得的网址，使得可以正常访问链接
-    d_url=d_url.replace('/kns','http://kns.cnki.net/KCMS')
-    search=s.get(d_url)
-    selector=scrapy.Selector(text=search.text)
-    # 导出参考文献是一个js函数，有两个参数 网址和文件名，点击会在新建标签页打开新的网址
-    cankao=selector.xpath('//div[@class="wxTitle"]/div[@class="link"]/a[1]/@onclick').extract_first()
-    # 把网址和文件名分开，之前用，连接。search函数需要group（）
-    caokao_url=re.search(r'\'.*\'',cankao).group().split(',')
-    # 获得的网址和文件名带单引号，去掉。用fiddle抓包发现新建的标签页是post请求的
-    search=s.post(caokao_url[0].strip('\''),data={'formfilenames':caokao_url[1].strip('\'')})
-    selector=scrapy.Selector(text=search.text)
-    # 仅仅<tr>用xpath无法识别，可以直接忽略
-    # text=selector.xpath('//table[@class="mainTable"]/tr[1]/td/text()').extract_first()
-    text=selector.xpath('//table[@class="mainTable"]/td[1]/text()').extract_first()
+    try:
+        # 用urlencode构建网址
+        search=s.get(url+urlencode(parameter),headers=headers)
+        selector=scrapy.Selector(text=search.text)
+        # 仅仅<tbody>无法被找到
+        d_url=selector.xpath('//table[@class="GridTableContent"]/tr[2]/td[2]/a/@href').extract_first()
+        # 修改获得的网址，使得可以正常访问链接
+        d_url=d_url.replace('/kns','http://kns.cnki.net/KCMS')
+        search=s.get(d_url)
+        selector=scrapy.Selector(text=search.text)
+        # 导出参考文献是一个js函数，有两个参数 网址和文件名，点击会在新建标签页打开新的网址
+        cankao=selector.xpath('//div[@class="wxTitle"]/div[@class="link"]/a[1]/@onclick').extract_first()
+        # 把网址和文件名分开，之前用，连接。search函数需要group（）
+        caokao_url=re.search(r'\'.*\'',cankao).group().split(',')
+        # 获得的网址和文件名带单引号，去掉。用fiddle抓包发现新建的标签页是post请求的
+        search=s.post(caokao_url[0].strip('\''),data={'formfilenames':caokao_url[1].strip('\'')})
+        selector=scrapy.Selector(text=search.text)
+        # 仅仅<tr>用xpath无法识别，可以直接忽略
+        # text=selector.xpath('//table[@class="mainTable"]/tr[1]/td/text()').extract_first()
+        text=selector.xpath('//table[@class="mainTable"]/td[1]/text()').extract_first()
+    except:
+        text='查找出错 文件名为:{}'.format(key)
     # 输出参考文献
     print(text)
