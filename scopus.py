@@ -60,7 +60,7 @@ for k in keylists:
         title=info[0].strip()
         journal=info[3].strip().split('\n')[0]
         vol_issue=info[3].strip().split('\n')[1]
-        page=info[3].strip().split('\n')[3]
+        page=info[3].strip().split('\n,')[3]
         cankao='{}{}[J].{},{},{}:{}.'.format(author,title,journal,year,vol_issue,page)
     except:
         cankao='查找出错 文件名为:{}'.format(key)
